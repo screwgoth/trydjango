@@ -1,6 +1,25 @@
 from django import forms
+from .models import Articles
 
-class ArticleForm(forms.Form):
+class ArticleForm(forms.ModelForm):
+	class Meta:
+		model = Articles
+		# Always good to declare the fields
+		fields = ['title', 'content']
+	
+	def clean(self):
+		data = self.cleaned_data
+		title = data.get('title')
+		print(title)
+		# Queryset to filter data
+		qs = Articles.objects.all().filter(title__icontains=title)
+		if qs.exists():
+			#print(dir(qs))
+			# add_error() is another way to inject error. Replaced ValidatioError.
+			self.add_error('title', "Title already exists")
+		return data
+
+class ArticleFormOld(forms.Form):
 	title = forms.CharField()
 	content = forms.CharField()
 

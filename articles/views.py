@@ -12,9 +12,11 @@ def article_create_view(request):
 	}
 	# is_valid() checks against all the "clean()" methods of the ArticleForm class
 	if form.is_valid():
-		title = form.cleaned_data.get('title')
-		content = form.cleaned_data.get('content')
-		article_object = Articles.objects.create(title=title, content=content)
+		article_object = form.save() # That's it!!
+		# title = form.cleaned_data.get('title')
+		# content = form.cleaned_data.get('content')
+		# article_object = Articles.objects.create(title=title, content=content)
+
 		# This is also one way to populate context
 		context['object'] = article_object
 		# Context can have any fields.
