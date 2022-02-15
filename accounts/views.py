@@ -1,7 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 
-# Create your views here.
+def register_view(request):
+	form = UserCreationForm(request.POST or None)
+	if form.is_valid():
+		user_obj = form.save()
+
+		return redirect("/login/")
+	# Another way to pass context directly.
+	return render(request, "accounts/register.html", {"form": form})
+
 def login_view(request):
 
 	# Do stuff only for POST requests, otherwise it will be called
@@ -30,8 +39,3 @@ def logout_view(request):
 		logout(request)
 		return redirect("/login/")
 	return render(request, "accounts/logout.html", {})
-
-
-def register_view(request):
-
-	return render(request, "accounts/register.html", {})

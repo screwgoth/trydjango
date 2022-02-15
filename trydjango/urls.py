@@ -19,7 +19,8 @@ from .views import home_view
 #from accounts import views
 from accounts.views import (
     login_view,
-    logout_view
+    logout_view,
+    register_view
 )
 #from articles import views
 from articles.views import (
@@ -38,4 +39,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view),
     path('logout/', logout_view),
+    path('register/', register_view),
 ]
