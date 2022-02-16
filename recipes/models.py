@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 from .validators import validate_units_measurement
 from .utils import number_str_to_float
 
@@ -11,6 +12,9 @@ class Recipe(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	active = models.BooleanField(default=True)
+
+	def get_absolute_url(self):
+		return reverse('recipes:detail', kwargs={'id': self.id})
 
 
 class RecipeIngredient(models.Model):
@@ -24,6 +28,9 @@ class RecipeIngredient(models.Model):
 	timestamp = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	active = models.BooleanField(default=True)
+
+	def get_absolute_url(self):
+		return self.recipe.get_absolute_url()
 
 	# Overriding the save method to convert the quantity to float
 	def save(self, *args, **kwargs):
