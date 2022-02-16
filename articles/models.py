@@ -1,9 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 
 # Create your models here.
+User = settings.AUTH_USER_MODEL
 class Articles (models.Model):
+	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
 	title = models.CharField(max_length=255)
 	slug = models.SlugField(max_length=50, blank=True, null=True)
 	content = models.TextField()
