@@ -68,12 +68,15 @@ def article_search_view(request):
 	return render(request, "articles/search.html", context=context)
 
 # For each new argument, add argument to the function
-def article_detail_view(request, id=None):
+# def article_detail_view(request, id=None):
+def article_detail_view(request, slug=None):
 	# print(request)
 	article_obj = None
 	#Check id is not None
-	if id is not None:
-		article_obj = Articles.objects.get(id=id)
+	# if id is not None:
+	# 	article_obj = Articles.objects.get(id=id)
+	if slug is not None:
+		article_obj = Articles.objects.get(slug=slug)
 
 	context = {
 		"object": article_obj,
