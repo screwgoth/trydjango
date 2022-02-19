@@ -49,10 +49,15 @@ def recipe_update_view(request, id=None):
 	# Check all() for validating all the if conditions
 	#if form.is_valid():
 	if all([form.is_valid(), form2.is_valid()]):
-		form.save(commit=False)
-		form2.save(commit=False)
-		print('form', form.cleaned_data)
-		print('form2', form2.cleaned_data)
+		# form.save(commit=False)
+		# form2.save(commit=False)
+		# print('form', form.cleaned_data)
+		# print('form2', form2.cleaned_data)
+		parent = form.save(commit=False)
+		parent.save()
+		child = form2.save(commit=False)
+		child.recipe = parent
+		child.save()
 		context['message'] = "Recipe Updated"
 		return redirect(obj.get_absolute_url())
 	return render(request, 'recipes/create-update.html', context=context)
