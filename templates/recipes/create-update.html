@@ -6,8 +6,12 @@
 	<form actions="." method="POST">{% csrf_token %}
 		{{ form.as_p }}
 
-		{% if form2 %}
+		<!-- {% if form2 %}
 		{{ form2.as_p }}
+		{% endif %} -->
+
+		{% if formset %}
+		{{ formset.as_p }}
 		{% endif %}
 		<div style="margin-top:10px">
 			<button type="submit">Save</button>
