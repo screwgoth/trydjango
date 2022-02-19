@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_list_or_404, redirect
+from django.shortcuts import render, get_list_or_404, redirect, get_object_or_404
 from .models import Recipe
-from .forms import RecipeForm
+from .forms import RecipeForm, RecipeIngredientForm	
 
 # Create your views here.
 @login_required
@@ -14,7 +14,7 @@ def recipe_list_view(request):
 
 @login_required
 def recipe_detail_view(request, id=None):
-	obj = get_list_or_404(Recipe, id=id, user=request.user)
+	obj = get_object_or_404(Recipe, id=id, user=request.user)
 	context = {
 		"object": obj
 	}
@@ -38,13 +38,21 @@ def recipe_create_view(request):
 
 @login_required
 def recipe_update_view(request, id=None):
-	obj = get_list_or_404(Recipe, id=id, user=request.user)
+	obj = get_object_or_404(Recipe, id=id, user=request.user)
 	form = RecipeForm(request.POST or None, instance=obj)
+	form2 = RecipeIngredientForm(request.POST or None)
 	context = {
 		"form": form,
+		"form2": form2,
 		"object": obj
 	}
-	if form.is_valid():
-		form.save()
+	# Check all() for validating all the if conditions
+	#if form.is_valid():
+	if all([form.is_valid(), form2.is_valid()]):
+		form.save(commit=False)
+		form2.save(commit=False)
+		print('form', form.cleaned_data)
+		print('form2', form2.cleaned_data)
 		context['message'] = "Recipe Updated"
+		return redirect(obj.get_absolute_url())
 	return render(request, 'recipes/create-update.html', context=context)

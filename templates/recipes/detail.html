@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ object.name }}</h1>
+<h1>Recipe details</h1>
+<h1>{{ object.name }}<small><a href='{{ object.get_edit_url }}'> Edit</a></small></h1>
 <p>{{ object.description }}</p>
+<p>{{ object.directions }}</p>
+
+{% for ingerdient in object.recipeingredient_set.all %}
+<h1>{{ ingerdient.name }}</h1>
+<p>{{ ingerdient.quantity }} {{ ingerdient.unit }}</p>
+{% endfor %}
 {% endblock content %}
